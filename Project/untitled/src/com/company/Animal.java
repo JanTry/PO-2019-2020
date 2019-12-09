@@ -18,6 +18,9 @@ public class Animal implements IObject {
         this.energy=10;
         genes=new Genes(tab);
     }
+    public Genes getGenes(){
+        return this.genes;
+    }
     public String toString(){
         return this.direction.toString();
     }
@@ -58,7 +61,17 @@ public class Animal implements IObject {
     public void eatGrass(){
         this.energy+=10;
     }
-    public boolean process(Map map){
+
+    public Direction randomDirection(){
+        Direction dir=Direction.NORTH;
+        int p=(int) Math.random()*8;
+        for(int i=0;i<p;i++){
+            dir=dir.next();
+        }
+        return dir;
+    }
+
+    public void process(Map map){
 //        It has to:
 //        Rotate
 //        Check if can move forward
@@ -67,10 +80,30 @@ public class Animal implements IObject {
 //        If there is animal - have sex with it
 
         this.rotate(this.genes.getRotation());
+        Vector2d newPosition=this.position.add(this.direction.toUnitVector());
+        if(map.canMoveTo(newPosition,this.objectType())){
+            if(map.isOccupied(newPosition)){
+                IObject object=map.myObjectAt(newPosition);
+                if(object.objectType()==Type.GRASS){
+                    map.deleteFromPosition(newPosition);
+                    this.eatGrass();
+                }
+                else
+                    if(object.getEnergy()>5 && this.getEnergy()>5){
+                        int[] tab=this.genes.combine(object.getGenes());
+                        Direction temp=this.randomDirection();
 
+                        Animal animal=new Animal(this.position.getX(),this.position.getY(),tab);
+                        while(!(map.place(animal)){
+                            Animal animal=new Animal(this.position.getX(),this.position.getY(),tab);
+                        }
+                    }
+            }
+            map.replace(this,this.getPosition(),newPosition);
+            this.moveForward();
 
+        }
         this.energy--;
-        return energy > 0;
     }
 
     @Override

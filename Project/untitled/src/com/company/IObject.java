@@ -5,4 +5,6 @@ public interface IObject {
     int getEnergy();
     Vector2d getPosition();
     String toString();
+
+    Genes getGenes();
 }

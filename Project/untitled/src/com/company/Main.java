@@ -20,12 +20,14 @@ public class Main {
         Animal myDog=new Animal(3,3,generate(),Direction.NORTHEAST);
         myDog.setEnergy(0);
         map.place(myDog);
-        map.deleteDead();
-
+//        map.deleteDead();
+        map.process();
         map.place(new Grass(new Vector2d(7,8)));
         map.place(new Grass(new Vector2d(7,9)));
         map.place(new Grass(new Vector2d(7,10)));
-        map.place(new Grass(new Vector2d(5,5)));
+        map.process();
+        map.process();
+//        map.place(new Grass(new Vector2d(5,5)));
 
         map.draw();
     }

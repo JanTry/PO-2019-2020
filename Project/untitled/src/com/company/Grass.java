@@ -23,6 +23,9 @@ public class Grass implements IObject{
     public int getY(){
         return this.getPosition().getY();
     }
+    public Genes getGenes(){
+        throw new IllegalStateException("Unexpected getGenes call at GRASS element");
+    }
 
 //    public int compareTo(Object o) {
 //        return this.getX()*1000+this.getY();

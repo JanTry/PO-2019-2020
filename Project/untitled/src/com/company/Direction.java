@@ -9,6 +9,8 @@ public enum Direction {
     SOUTHWEST,
     WEST,
     NORTHWEST;
+
+
     public Direction next() {
         switch (this) {
             case NORTH:

@@ -40,8 +40,26 @@ public class Map {
         return true;
     }
 
+    public void replace(Animal animal, Vector2d oldPosition, Vector2d newPosition){
+        hashMap.remove(oldPosition);
+        hashMap.put(newPosition, animal);
+    }
+
     public Object objectAt(Vector2d position) {
         return hashMap.get(position);
+    }
+    public IObject myObjectAt(Vector2d position) {
+        return hashMap.get(position);
+    }
+
+    public void deleteFromPosition(Vector2d position){
+        IObject t=hashMap.get(position);
+        hashMap.remove(position);
+        if(t.objectType()==Type.GRASS){
+            grasses.remove(t);
+        }
+        else
+            animals.remove(t);
     }
 
     public void draw(){
@@ -63,10 +81,10 @@ public class Map {
     }
 
     public void process(){ //Basic part
-//        this.generateGrass();
+//        this.generateGrass(); //Not done yet
         this.deleteDead();
         for(Animal animal:this.animals){
-            animal.process(this);
+            animal.process(this); //Not done yet
         }
     }
 }
