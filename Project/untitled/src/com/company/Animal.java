@@ -18,6 +18,9 @@ public class Animal implements IObject {
         this.energy=10;
         genes=new Genes(tab);
     }
+    public String toString(){
+        return this.direction.toString();
+    }
     public Direction getDirection() {
         return direction;
     }
@@ -55,7 +58,7 @@ public class Animal implements IObject {
     public void eatGrass(){
         this.energy+=10;
     }
-    public boolean process(){
+    public boolean process(Map map){
 //        It has to:
 //        Rotate
 //        Check if can move forward

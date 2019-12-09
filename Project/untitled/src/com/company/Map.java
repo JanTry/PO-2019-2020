@@ -21,20 +21,52 @@ public class Map {
         return sizeY;
     }
 
-    private boolean isOccupied(Vector2d position){ //Checks if there is anything on this spot
+    public boolean isOccupied(Vector2d position){ //Checks if there is anything on this spot
         return hashMap.containsKey(position);
     }
 
     public boolean canMoveTo(Vector2d position, Type type){ //Checks
         if(!isOccupied(position))return true;
-        IObject p=hashMap.get(position); //And what about 2 already in 1 place?
+//        IObject p=hashMap.get(position); //And what about 2 already in 1 place?
         return type!=Type.GRASS;
     }
 
     public boolean place(IObject object){
-        if(!canMoveTo(object.getPosition(), object.objectType())) return false;
+        if(object.objectType()==Type.ANIMAL && isOccupied(object.getPosition())) return false;
+        if(object.objectType()==Type.GRASS && !canMoveTo(object.getPosition(),object.objectType())) return false;
         if(object.objectType()==Type.GRASS) grasses.add((Grass)object);
         else animals.add((Animal)object);
+        hashMap.put(object.getPosition(),object);
         return true;
+    }
+
+    public Object objectAt(Vector2d position) {
+        return hashMap.get(position);
+    }
+
+    public void draw(){
+        MapVisualizer a=new MapVisualizer(this);
+        System.out.println(a.draw(new Vector2d(0,0), new Vector2d(this.sizeX,this.sizeY)));
+    }
+
+    public void delete(Animal animal){
+        hashMap.remove(animal.getPosition());
+        animals.remove(animal);
+    }
+
+    public void deleteDead(){
+        for(Animal animal:this.animals){
+            if(!(animal.getEnergy()>0)){
+                this.delete(animal);
+            }
+        }
+    }
+
+    public void process(){ //Basic part
+//        this.generateGrass();
+        this.deleteDead();
+        for(Animal animal:this.animals){
+            animal.process(this);
+        }
     }
 }

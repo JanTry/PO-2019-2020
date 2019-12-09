@@ -53,4 +53,26 @@ public enum Direction {
                 throw new IllegalStateException("Unexpected Direction value: " + this);
         }
     }
+    public String toString() {
+        switch (this) {
+            case NORTH:
+                return  "N";
+            case NORTHEAST:
+                return "NE";
+            case SOUTH:
+                return "S";
+            case SOUTHEAST:
+                return "SE";
+            case EAST:
+                return "E";
+            case SOUTHWEST:
+                return "SW";
+            case WEST:
+                return "W";
+            case NORTHWEST:
+                return "NW";
+            default:
+                throw new IllegalStateException("Unexpected Direction value: " + this);
+        }
+    }
 }
