@@ -31,4 +31,10 @@ public class Map {
         return type!=Type.GRASS;
     }
 
+    public boolean place(IObject object){
+        if(!canMoveTo(object.getPosition(), object.objectType())) return false;
+        if(object.objectType()==Type.GRASS) grasses.add((Grass)object);
+        else animals.add((Animal)object);
+        return true;
+    }
 }
