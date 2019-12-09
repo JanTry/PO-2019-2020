@@ -103,10 +103,13 @@ public class Map {
         for(int i=0;i<animals.size();i++){
             animals.get(i).valid=true;
         }
-        return true;
 //        for(Animal animal:this.animals){
 //            animal.process(this); //Not done yet
 //        }
+        Generator tmp=new Generator();
+        for(int i=0;i<30 && !this.place(new Grass(tmp.point(sizeX,sizeY)));i++);
+        for(int i=0;i<30 && !this.place(new Grass(tmp.point((int)(sizeX/2),(int)(sizeY/2))));i++);
+        return true;
     }
 
     public Vector2d bound(Vector2d position){

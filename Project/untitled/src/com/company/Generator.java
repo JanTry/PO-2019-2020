@@ -2,8 +2,8 @@ package com.company;
 
 public class Generator {
     public Vector2d point(int rangeX, int rangeY) {
-        int x = (int) ((Math.random()) * rangeX + 1);
-        int y = (int) ((Math.random()) * rangeY + 1);
+        int x = (int) ((Math.random()) * (rangeX + 1));
+        int y = (int) ((Math.random()) * (rangeY + 1));
         return new Vector2d(x, y);
     }
 
