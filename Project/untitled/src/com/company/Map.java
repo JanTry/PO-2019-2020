@@ -32,8 +32,8 @@ public class Map {
     }
 
     public boolean place(IObject object){
-        if(object.objectType()==Type.ANIMAL && isOccupied(object.getPosition())) return false;
-        if(object.objectType()==Type.GRASS && !canMoveTo(object.getPosition(),object.objectType())) return false;
+        if(isOccupied(object.getPosition())) return false;
+//        if(object.objectType()==Type.GRASS && !canMoveTo(object.getPosition(),object.objectType())) return false;
         if(object.objectType()==Type.GRASS) grasses.add((Grass)object);
         else animals.add((Animal)object);
         hashMap.put(object.getPosition(),object);
@@ -83,8 +83,15 @@ public class Map {
     public void process(){ //Basic part
 //        this.generateGrass(); //Not done yet
         this.deleteDead();
+        System.out.println(animals.size());
         for(Animal animal:this.animals){
             animal.process(this); //Not done yet
         }
+    }
+
+    public Vector2d bound(Vector2d position){
+        position.x=position.x%this.sizeX;
+        position.y=position.y%this.sizeY;
+        return position;
     }
 }

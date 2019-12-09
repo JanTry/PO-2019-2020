@@ -15,7 +15,7 @@ public class Grass implements IObject{
         return this.position;
     }
     public String toString(){
-        return "g";
+        return "g ";
     }
     public int getX(){
         return this.getPosition().getX();

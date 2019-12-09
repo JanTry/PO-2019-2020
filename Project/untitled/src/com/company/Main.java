@@ -25,6 +25,12 @@ public class Main {
         map.place(new Grass(new Vector2d(7,8)));
         map.place(new Grass(new Vector2d(7,9)));
         map.place(new Grass(new Vector2d(7,10)));
+        map.place(new Animal(5,6, generate()));
+        map.place(new Animal(5,7, generate()));
+        map.place(new Animal(5,8, generate()));
+        map.process();
+        map.process();
+        map.process();
         map.process();
         map.process();
 //        map.place(new Grass(new Vector2d(5,5)));

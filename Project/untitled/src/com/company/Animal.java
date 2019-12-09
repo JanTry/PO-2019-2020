@@ -18,6 +18,13 @@ public class Animal implements IObject {
         this.energy=10;
         genes=new Genes(tab);
     }
+    public Animal(int x, int y, int[] tab, int energy, Direction dir){
+        this.position.x=x;
+        this.position.y=y;
+        this.energy=energy;
+        genes=new Genes(tab);
+        this.direction=dir;
+    }
     public Genes getGenes(){
         return this.genes;
     }
@@ -81,6 +88,7 @@ public class Animal implements IObject {
 
         this.rotate(this.genes.getRotation());
         Vector2d newPosition=this.position.add(this.direction.toUnitVector());
+        newPosition=map.bound(newPosition);
         if(map.canMoveTo(newPosition,this.objectType())){
             if(map.isOccupied(newPosition)){
                 IObject object=map.myObjectAt(newPosition);
@@ -92,12 +100,16 @@ public class Animal implements IObject {
                     if(object.getEnergy()>5 && this.getEnergy()>5){
                         int[] tab=this.genes.combine(object.getGenes());
                         Direction temp=this.randomDirection();
-
-                        Animal animal=new Animal(this.position.getX(),this.position.getY(),tab);
-                        while(!(map.place(animal)){
-                            Animal animal=new Animal(this.position.getX(),this.position.getY(),tab);
+                        Vector2d childPosition=newPosition.add(temp.toUnitVector());
+                        Animal animal=new Animal(childPosition.getX(),childPosition.getY(),tab,3, temp);
+                        while(!(map.place(animal))){
+                            temp=this.randomDirection();
+                            childPosition=newPosition.add(temp.toUnitVector());
+                            animal=new Animal(childPosition.getX(),childPosition.getY(),tab,3, temp);
                         }
                     }
+                    this.energy--;
+                    return;
             }
             map.replace(this,this.getPosition(),newPosition);
             this.moveForward();
