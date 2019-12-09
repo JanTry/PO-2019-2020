@@ -16,27 +16,17 @@ public class Map {
         this.sizeY = sizeY;
     }
 
-    public int getSizeX() {
-        return sizeX;
-    }
-
-    public int getSizeY() {
-        return sizeY;
-    }
-
     public boolean isOccupied(Vector2d position) { //Checks if there is anything on this spot
         return hashMap.containsKey(position);
     }
 
     public boolean canMoveTo(Vector2d position, Type type) { //Checks
         if (!isOccupied(position)) return true;
-//        IObject p=hashMap.get(position); //And what about 2 already in 1 place?
         return type != Type.GRASS;
     }
 
     public boolean place(IObject object) {
         if (isOccupied(object.getPosition())) return false;
-//        if(object.objectType()==Type.GRASS && !canMoveTo(object.getPosition(),object.objectType())) return false;
         if (object.objectType() == Type.GRASS) grasses.add((Grass) object);
         else animals.add((Animal) object);
         hashMap.put(object.getPosition(), object);
@@ -85,12 +75,10 @@ public class Map {
             if (!(animal.getEnergy() > 0)) {
                 this.delete(animal);
             }
-
         }
     }
 
     public boolean process() { //Basic part
-//        this.generateGrass(); //Not done yet
         this.deleteDead();
         System.out.println(animals.size());
         if (animals.size() == 0) return false;
@@ -106,12 +94,13 @@ public class Map {
         for (int i = 0; i < animals.size(); i++) {
             animals.get(i).valid = true;
         }
-//        for(Animal animal:this.animals){
-//            animal.process(this); //Not done yet
-//        }
         Generator tmp = new Generator();
-        for (int i = 0; i < 30 && !this.place(new Grass(tmp.point(sizeX, sizeY))); i++) ;
-        for (int i = 0; i < 30 && !this.place(new Grass(tmp.point(sizeX / 2, sizeY / 2))); i++) ;
+        for (int i = 0; i < 30 && !this.place(new Grass(tmp.point(sizeX, sizeY))); i++)
+            ; //To make it more realistic - the grass wont spawn every time
+        for (int i = 0; i < 30 && !this.place(new Grass(tmp.point(sizeX / 2, sizeY / 2))); i++)
+            ; //It might not spawn if there is too much grass all around.
+//         I stayed with 30 tries, as it was efficient enough
+//        Now, when there are not many animals on a big map we might see their path in estimation as the map kind of shows where it was
         return true;
     }
 

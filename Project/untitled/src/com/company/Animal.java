@@ -39,28 +39,12 @@ public class Animal implements IObject {
         return this.direction.toString();
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
     public int getEnergy() {
         return energy;
     }
 
     public void setEnergy(int energy) {
         this.energy = energy;
-    }
-
-    public int getX() {
-        return this.position.getX();
-    }
-
-    public int getY() {
-        return this.position.getY();
     }
 
     public Vector2d getPosition() {
@@ -75,10 +59,6 @@ public class Animal implements IObject {
 
     public Animal moveForward() {
         this.position = this.position.add(this.direction.toUnitVector());
-//        Here we shall move it on the map
-//        And probably a few cases will be here - covering being unable to move
-//        Also important to remember about removing animal on the opposite side of the map
-//        In case of moving out of boundaries
         return this;
     }
 
@@ -96,13 +76,6 @@ public class Animal implements IObject {
     }
 
     public void process(Map map) {
-//        It has to:
-//        Rotate
-//        Check if can move forward
-//        If yes, Move
-//        If there is grass - eat it
-//        If there is animal - have sex with it
-
         this.rotate(this.genes.getRotation());
         Vector2d newPosition = this.position.add(this.direction.toUnitVector());
 
@@ -123,7 +96,7 @@ public class Animal implements IObject {
                     int[] tab = this.genes.combine(object.getGenes());
                     Direction temp = this.randomDirection();
                     Vector2d childPosition = newPosition.add(temp.toUnitVector());
-                    int childEnergy = (int) (this.getEnergy() / 4) + (object.getEnergy() / 4);
+                    int childEnergy = (this.getEnergy() / 4) + (object.getEnergy() / 4);
                     Animal animal = new Animal(childPosition, tab, childEnergy, temp, false);
 
                     for (int i = 0; i < 20 && !(map.place(animal)); i++) {
@@ -131,17 +104,14 @@ public class Animal implements IObject {
                         childPosition = newPosition.add(temp.toUnitVector());
                         animal = new Animal(childPosition, tab, childEnergy, temp, false);
                     }
-                    this.setEnergy((int) (this.getEnergy() * 3) / 4);
-                    object.setEnergy((int) 3 * object.getEnergy() / 4);
+                    this.setEnergy((this.getEnergy() * 3) / 4);
+                    object.setEnergy(3 * object.getEnergy() / 4);
                 }
                 this.energy--;
                 return;
             }
             map.replace(this, this.position, newPosition);
             this.position = newPosition;
-//            map.replace(this,this.getPosition(),newPosition);
-
-
         }
         this.energy--;
     }

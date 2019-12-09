@@ -39,7 +39,4 @@ public class Grass implements IObject {
         throw new IllegalStateException("Unexpected getGenes call at GRASS element");
     }
 
-//    public int compareTo(Object o) {
-//        return this.getX()*1000+this.getY();
-//    }
 }
