@@ -2,8 +2,8 @@ package com.company;
 
 public class Grass implements IObject{
     private Vector2d position;
-    public boolean isAnimal(){
-        return false;
+    public Type objectType(){
+        return Type.GRASS;
     }
     public int getEnergy(){
         return 10;

@@ -71,7 +71,7 @@ public class Animal implements IObject {
     }
 
     @Override
-    public boolean isAnimal() {
-        return true;
+    public Type objectType() {
+        return Type.ANIMAL;
     }
 }

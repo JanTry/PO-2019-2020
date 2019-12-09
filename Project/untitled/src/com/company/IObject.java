@@ -1,6 +1,6 @@
 package com.company;
 
 public interface IObject {
-    boolean isAnimal();
+    public Type objectType();
     int getEnergy();
 }

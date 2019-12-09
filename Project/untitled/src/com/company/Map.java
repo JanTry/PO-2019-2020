@@ -25,14 +25,10 @@ public class Map {
         return hashMap.containsKey(position);
     }
 
-    public boolean canMoveTo(Vector2d position, Type type){
+    public boolean canMoveTo(Vector2d position, Type type){ //Checks
         if(!isOccupied(position))return true;
-        IObject p=hashMap.get(position);
-        if(p.isAnimal()) {
-            if(p.getEnergy()>4) return true;
-            else return false;
-        }
-        return true;
+        IObject p=hashMap.get(position); //And what about 2 already in 1 place?
+        return type!=Type.GRASS;
     }
 
 }
