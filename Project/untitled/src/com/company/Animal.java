@@ -62,8 +62,8 @@ public class Animal implements IObject {
         return this;
     }
 
-    public void eatGrass() {
-        this.energy += 10;
+    public void eatGrass(int grassEnergy) {
+        this.energy += grassEnergy;
     }
 
     public Direction randomDirection() {
@@ -86,7 +86,7 @@ public class Animal implements IObject {
                 IObject object = map.myObjectAt(newPosition);
                 if (object.objectType() == Type.GRASS) {
                     map.deleteFromPosition(newPosition);
-                    this.eatGrass();
+                    this.eatGrass(map.getGrassEnergy());
                     map.replace(this, this.position, newPosition);
                     this.position = newPosition;
                     this.moveForward();

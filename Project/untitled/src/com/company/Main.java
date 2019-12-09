@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Evolution darwin = new Evolution(50, 30, 40, 10);
+        Evolution darwin = new Evolution(50, 30, 40, 10, 40);
         darwin.run(100);
     }
 }

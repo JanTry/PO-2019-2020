@@ -10,10 +10,16 @@ public class Map {
     private int sizeX;
     private int sizeY;
     private HashMap<Vector2d, IObject> hashMap = new HashMap<Vector2d, IObject>();
+    private int grassEnergy;
 
-    public Map(int sizeX, int sizeY) {
+    public Map(int sizeX, int sizeY, int grassEnergy) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
+        this.grassEnergy = grassEnergy;
+    }
+
+    public int getGrassEnergy() {
+        return this.grassEnergy;
     }
 
     public boolean isOccupied(Vector2d position) { //Checks if there is anything on this spot
@@ -95,9 +101,9 @@ public class Map {
             animals.get(i).valid = true;
         }
         Generator tmp = new Generator();
-        for (int i = 0; i < 30 && !this.place(new Grass(tmp.point(sizeX, sizeY))); i++)
+        for (int i = 0; i < 30 && !this.place(new Grass(tmp.outsidePoint(sizeX, sizeY))); i++)
             ; //To make it more realistic - the grass wont spawn every time
-        for (int i = 0; i < 30 && !this.place(new Grass(tmp.point(sizeX / 2, sizeY / 2))); i++)
+        for (int i = 0; i < 30 && !this.place(new Grass(tmp.junglePoint(sizeX, sizeY))); i++)
             ; //It might not spawn if there is too much grass all around.
 //         I stayed with 30 tries, as it was efficient enough
 //        Now, when there are not many animals on a big map we might see their path in estimation as the map kind of shows where it was
