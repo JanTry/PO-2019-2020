@@ -73,25 +73,45 @@ public class Map {
     }
 
     public void deleteDead(){
-        for(Animal animal:this.animals){
-            if(!(animal.getEnergy()>0)){
+        int size=animals.size();
+        Animal animal;
+        for(int i=0;i<size;i++){
+            animal = animals.get(0);
+            animals.remove(0);
+            animals.add(animal);
+            if (!(animal.getEnergy() > 0)) {
                 this.delete(animal);
             }
+
         }
     }
 
-    public void process(){ //Basic part
+    public boolean process(){ //Basic part
 //        this.generateGrass(); //Not done yet
         this.deleteDead();
         System.out.println(animals.size());
-        for(Animal animal:this.animals){
-            animal.process(this); //Not done yet
+        if(animals.size()==0)return false;
+        int size=animals.size();
+        Animal animal;
+        while(animals.get(0).valid){
+            animal = animals.get(0);
+            animals.remove(0);
+            animal.process(this);
+            animal.valid=false;
+            animals.add(animal);
         }
+        for(int i=0;i<animals.size();i++){
+            animals.get(i).valid=true;
+        }
+        return true;
+//        for(Animal animal:this.animals){
+//            animal.process(this); //Not done yet
+//        }
     }
 
     public Vector2d bound(Vector2d position){
-        position.x=position.x%this.sizeX;
-        position.y=position.y%this.sizeY;
-        return position;
+        Vector2d newPosition= new Vector2d((position.x+this.sizeX+1)%(this.sizeX+1),(position.y+this.sizeY+1)%(this.sizeY+1));
+
+        return newPosition;
     }
 }

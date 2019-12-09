@@ -5,25 +5,27 @@ public class Animal implements IObject {
     private Direction direction=Direction.NORTH;
     private int energy;
     private Genes genes;
-    public Animal(int x, int y, int[] tab, Direction dir){
-        this.position.x=x;
-        this.position.y=y;
+    public boolean valid=true;
+    public Animal(Vector2d position, int[] tab, int energy, Direction dir){
+        this.position.x=position.getX();
+        this.position.y=position.getY();
         this.direction=dir;
-        this.energy=10;
+        this.energy=energy;
         genes=new Genes(tab);
     }
-    public Animal(int x, int y, int[] tab){
-        this.position.x=x;
-        this.position.y=y;
-        this.energy=10;
+    public Animal(Vector2d position, int[] tab, int energy){
+        this.position.x=position.getX();
+        this.position.y=position.getY();
+        this.energy=energy;
         genes=new Genes(tab);
     }
-    public Animal(int x, int y, int[] tab, int energy, Direction dir){
-        this.position.x=x;
-        this.position.y=y;
+    public Animal(Vector2d position, int[] tab, int energy, Direction dir,boolean valid){
+        this.position.x=position.getX();
+        this.position.y=position.getY();
         this.energy=energy;
         genes=new Genes(tab);
         this.direction=dir;
+        this.valid=valid;
     }
     public Genes getGenes(){
         return this.genes;
@@ -88,31 +90,44 @@ public class Animal implements IObject {
 
         this.rotate(this.genes.getRotation());
         Vector2d newPosition=this.position.add(this.direction.toUnitVector());
-        newPosition=map.bound(newPosition);
+
+        newPosition=map.bound(newPosition); //Covers going out of edges
+
         if(map.canMoveTo(newPosition,this.objectType())){
             if(map.isOccupied(newPosition)){
                 IObject object=map.myObjectAt(newPosition);
                 if(object.objectType()==Type.GRASS){
                     map.deleteFromPosition(newPosition);
                     this.eatGrass();
+                    map.replace(this,this.position,newPosition);
+                    this.position=newPosition;
+                    this.moveForward();
+                    map.replace(this,this.position,newPosition);
+                    this.position=newPosition;
                 }
                 else
                     if(object.getEnergy()>5 && this.getEnergy()>5){
                         int[] tab=this.genes.combine(object.getGenes());
                         Direction temp=this.randomDirection();
                         Vector2d childPosition=newPosition.add(temp.toUnitVector());
-                        Animal animal=new Animal(childPosition.getX(),childPosition.getY(),tab,3, temp);
-                        while(!(map.place(animal))){
+                        int childEnergy=(int)(this.getEnergy()/4)+(object.getEnergy()/4);
+                        Animal animal=new Animal(childPosition, tab, childEnergy, temp,false);
+
+                        for(int i=0;i<20 && !(map.place(animal));i++){
                             temp=this.randomDirection();
                             childPosition=newPosition.add(temp.toUnitVector());
-                            animal=new Animal(childPosition.getX(),childPosition.getY(),tab,3, temp);
+                            animal=new Animal(childPosition, tab, childEnergy, temp,false);
                         }
+                        this.setEnergy((int)(this.getEnergy()*3)/4);
+                        object.setEnergy((int)3*object.getEnergy()/4);
                     }
                     this.energy--;
                     return;
             }
-            map.replace(this,this.getPosition(),newPosition);
-            this.moveForward();
+            map.replace(this,this.position,newPosition);
+            this.position=newPosition;
+//            map.replace(this,this.getPosition(),newPosition);
+
 
         }
         this.energy--;

@@ -26,6 +26,9 @@ public class Grass implements IObject{
     public Genes getGenes(){
         throw new IllegalStateException("Unexpected getGenes call at GRASS element");
     }
+    public void setEnergy(int energy){
+        throw new IllegalStateException("Unexpected setEnergy call at GRASS element");
+    }
 
 //    public int compareTo(Object o) {
 //        return this.getX()*1000+this.getY();
