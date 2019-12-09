@@ -8,13 +8,13 @@ public class Vector2d {
         this.setY(y);
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 13;
-        hash += this.x * 31;
-        hash += this.y * 17;
-        return hash;
-    }
+//    @Override
+//    public int hashCode() {
+//        int hash = 13;
+//        hash += this.x * 31;
+//        hash += this.y * 17;
+//        return hash;
+//    }
 
     public int getX() {
         return x;
@@ -30,28 +30,28 @@ public class Vector2d {
         return y;
     }
 
-    public boolean precedes(Vector2d other){
-        return this.getX() <= other.getX() && this.getY() <= other.getY();
-    }
-    public boolean follows(Vector2d other){
-        return this.getX() >= other.getX() && this.getY() >= other.getY();
-    }
+//    public boolean precedes(Vector2d other){
+//        return this.getX() <= other.getX() && this.getY() <= other.getY();
+//    }
+//    public boolean follows(Vector2d other){
+//        return this.getX() >= other.getX() && this.getY() >= other.getY();
+//    }
 
-    public Vector2d upperRight(Vector2d other){
-        int a=this.x;
-        int b=this.y;
-        if(other.x>a)a=other.x;
-        if(other.y>b)b=other.y;
-        return new Vector2d(a,b);
-    }
+//    public Vector2d upperRight(Vector2d other){
+//        int a=this.x;
+//        int b=this.y;
+//        if(other.x>a)a=other.x;
+//        if(other.y>b)b=other.y;
+//        return new Vector2d(a,b);
+//    }
 
-    public Vector2d lowerLeft(Vector2d other){
-        int a=this.x;
-        int b=this.y;
-        if(other.x<a)a=other.x;
-        if(other.y<b)b=other.y;
-        return new Vector2d(a,b);
-    }
+//    public Vector2d lowerLeft(Vector2d other){
+//        int a=this.x;
+//        int b=this.y;
+//        if(other.x<a)a=other.x;
+//        if(other.y<b)b=other.y;
+//        return new Vector2d(a,b);
+//    }
 
     public Vector2d add(Vector2d other){
 
@@ -61,12 +61,12 @@ public class Vector2d {
         return temp;
     }
 
-    public Vector2d subtract(Vector2d other){
-        int a=this.getX()-other.getX();
-        int b=this.getY()-other.getY();
-        Vector2d temp = new Vector2d(a,b);
-        return temp;
-    }
+//    public Vector2d subtract(Vector2d other){
+//        int a=this.getX()-other.getX();
+//        int b=this.getY()-other.getY();
+//        Vector2d temp = new Vector2d(a,b);
+//        return temp;
+//    }
 
     public boolean equals(Object other){
         if (this == other)
@@ -78,11 +78,11 @@ public class Vector2d {
         return true;
     }
 
-    public Vector2d opposite(){
-        int a= (-this.getX());
-        int b= (-this.getY());
-        return new Vector2d(a,b);
-    }
+//    public Vector2d opposite(){
+//        int a= (-this.getX());
+//        int b= (-this.getY());
+//        return new Vector2d(a,b);
+//    }
 
     public String toString(){
         String w="(";
