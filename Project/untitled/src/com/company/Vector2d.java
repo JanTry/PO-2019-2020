@@ -3,7 +3,8 @@ package com.company;
 public class Vector2d {
     int x;
     int y;
-    public Vector2d(int x, int y){
+
+    public Vector2d(int x, int y) {
         this.setX(x);
         this.setY(y);
     }
@@ -23,11 +24,13 @@ public class Vector2d {
     private void setX(int x) {
         this.x = x;
     }
-    private void setY(int y) {
-        this.y = y;
-    }
+
     public int getY() {
         return y;
+    }
+
+    private void setY(int y) {
+        this.y = y;
     }
 
 //    public boolean precedes(Vector2d other){
@@ -53,11 +56,11 @@ public class Vector2d {
 //        return new Vector2d(a,b);
 //    }
 
-    public Vector2d add(Vector2d other){
+    public Vector2d add(Vector2d other) {
 
-        int a=this.getX()+other.getX();
-        int b=this.getY()+other.getY();
-        Vector2d temp = new Vector2d(a,b);
+        int a = this.getX() + other.getX();
+        int b = this.getY() + other.getY();
+        Vector2d temp = new Vector2d(a, b);
         return temp;
     }
 
@@ -68,7 +71,7 @@ public class Vector2d {
 //        return temp;
 //    }
 
-    public boolean equals(Object other){
+    public boolean equals(Object other) {
         if (this == other)
             return true;
         if (!(other instanceof Vector2d))
@@ -84,12 +87,12 @@ public class Vector2d {
 //        return new Vector2d(a,b);
 //    }
 
-    public String toString(){
-        String w="(";
-        w+=x;
-        w+=',';
-        w+=y;
-        w+=')';
+    public String toString() {
+        String w = "(";
+        w += x;
+        w += ',';
+        w += y;
+        w += ')';
         return w;
     }
 }

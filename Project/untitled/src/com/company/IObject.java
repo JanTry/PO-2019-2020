@@ -1,10 +1,15 @@
 package com.company;
 
 public interface IObject {
-    public Type objectType();
+    Type objectType();
+
     int getEnergy();
-    Vector2d getPosition();
-    String toString();
+
     void setEnergy(int energy);
+
+    Vector2d getPosition();
+
+    String toString();
+
     Genes getGenes();
 }

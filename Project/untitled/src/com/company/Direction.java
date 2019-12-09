@@ -33,6 +33,7 @@ public enum Direction {
                 throw new IllegalStateException("Unexpected Direction value: " + this);
         }
     }
+
     public Vector2d toUnitVector() {
         switch (this) {
             case NORTH:
@@ -55,10 +56,11 @@ public enum Direction {
                 throw new IllegalStateException("Unexpected Direction value: " + this);
         }
     }
+
     public String toString() {
         switch (this) {
             case NORTH:
-                return  "N ";
+                return "N ";
             case NORTHEAST:
                 return "NE";
             case SOUTH:
