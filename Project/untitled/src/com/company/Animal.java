@@ -1,6 +1,6 @@
 package com.company;
 
-public class Animal {
+public class Animal implements IObject {
     private Vector2d position=new Vector2d(2,2);
     private Direction direction=Direction.NORTH;
     private int energy;
@@ -68,5 +68,10 @@ public class Animal {
 
         this.energy--;
         return energy > 0;
+    }
+
+    @Override
+    public boolean isAnimal() {
+        return true;
     }
 }
