@@ -87,21 +87,23 @@ public class Animal implements IObject {
                 if (object.objectType() == Type.GRASS) {
                     map.deleteFromPosition(newPosition);
                     this.eatGrass(map.getGrassEnergy());
-                    map.replace(this, this.position, newPosition);
-                    this.position = newPosition;
-                    this.moveForward();
+//                    map.replace(this, this.position, newPosition);
+//                    this.position = newPosition;
+//                    this.moveForward();
                     map.replace(this, this.position, newPosition);
                     this.position = newPosition;
                 } else if (object.getEnergy() > 5 && this.getEnergy() > 5) {
                     int[] tab = this.genes.combine(object.getGenes());
                     Direction temp = this.randomDirection();
                     Vector2d childPosition = newPosition.add(temp.toUnitVector());
+                    childPosition=map.bound(childPosition);
                     int childEnergy = (this.getEnergy() / 4) + (object.getEnergy() / 4);
                     Animal animal = new Animal(childPosition, tab, childEnergy, temp, false);
 
                     for (int i = 0; i < 20 && !(map.place(animal)); i++) {
                         temp = this.randomDirection();
                         childPosition = newPosition.add(temp.toUnitVector());
+                        childPosition=map.bound(childPosition);
                         animal = new Animal(childPosition, tab, childEnergy, temp, false);
                     }
                     this.setEnergy((this.getEnergy() * 3) / 4);

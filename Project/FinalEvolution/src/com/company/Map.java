@@ -11,11 +11,14 @@ public class Map {
     public int sizeY;
     private HashMap<Vector2d, IObject> hashMap = new HashMap<Vector2d, IObject>();
     private int grassEnergy;
+    DrawType[][] VisualizationArray;
 
-    public Map(int sizeX, int sizeY, int grassEnergy) {
+
+    public Map(int sizeX, int sizeY, int grassEnergy, DrawType[][] VisualizationArray) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.grassEnergy = grassEnergy;
+        this.VisualizationArray=VisualizationArray;
     }
 
     public int getGrassEnergy() {
@@ -33,15 +36,28 @@ public class Map {
 
     public boolean place(IObject object) {
         if (isOccupied(object.getPosition())) return false;
-        if (object.objectType() == Type.GRASS) grasses.add((Grass) object);
-        else animals.add((Animal) object);
+        if (object.objectType() == Type.GRASS){
+            grasses.add((Grass) object);
+            this.VisualizationArray[object.getPosition().getX()][object.getPosition().getY()]=DrawType.GRASS;
+        }
+        else {
+            animals.add((Animal) object);
+            if(object.getEnergy()>this.getGrassEnergy())this.VisualizationArray[object.getPosition().getX()][object.getPosition().getY()]=DrawType.ANIMAL;
+            else this.VisualizationArray[object.getPosition().getX()][object.getPosition().getY()]=DrawType.TiredAnimal;
+        }
         hashMap.put(object.getPosition(), object);
+
         return true;
     }
 
     public void replace(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
+        this.bound(oldPosition);
+        this.bound(newPosition);
         hashMap.remove(oldPosition);
+        this.VisualizationArray[oldPosition.getX()][oldPosition.getY()]=DrawType.BLANK;
         hashMap.put(newPosition, animal);
+        if(animal.getEnergy()>this.getGrassEnergy())this.VisualizationArray[newPosition.getX()][newPosition.getY()]=DrawType.ANIMAL;
+        else this.VisualizationArray[newPosition.getX()][newPosition.getY()]=DrawType.TiredAnimal;
     }
 
     public Object objectAt(Vector2d position) {
@@ -59,6 +75,7 @@ public class Map {
             grasses.remove(t);
         } else
             animals.remove(t);
+        this.VisualizationArray[position.getX()][position.getY()]=DrawType.BLANK;
     }
 
     public void draw() {
@@ -67,8 +84,7 @@ public class Map {
     }
 
     public DrawType[][] drawing(){
-        AppVisualizer a = new AppVisualizer(this);
-        return a.draw();
+        return this.VisualizationArray;
     }
 
     public void delete(Animal animal) {

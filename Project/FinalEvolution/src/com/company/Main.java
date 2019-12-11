@@ -34,7 +34,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, InterruptedException {
         VBox root = new VBox(5);
         Label textLbl = new Label("                ");
         TextArea text = new TextArea();
@@ -46,80 +46,86 @@ public class Main extends Application {
         Text t = new Text();
         t.setX(20.0f);
         t.setY(65.0f);
-        GridPane pane = new GridPane();
-        Evolution darwin = new Evolution(50, 30, 160, 10, 50);
-        int presetSteps = 1000; //And presetSteps
-        DrawType[][][] myArray = darwin.run(presetSteps);
-        print(myArray,stage);
+//        GridPane pane = new GridPane();
+        Evolution darwin = new Evolution(50, 30, 160, 10, 50, stage);
+//        int presetSteps = 1000; //And presetSteps
+        stage.show();
+        Boolean done= darwin.next(stage);
+        for(int i=0;i<2 && darwin.next(stage);i++);
+//        while(darwin.next(stage)){
+//            this.wait(100);
+//        }
 
-        Button getNextStep = new Button("Next Step");
-        getNextStep.setOnAction(e -> nextView(myArray, stage));
-        Button getPreviousStep = new Button("Previous Step");
-        getPreviousStep.setOnAction(e -> prevView(myArray, stage));
-        Button getSkippedStep = new Button("Skip 10");
-        getSkippedStep.setOnAction(e -> skip10View(myArray, stage));
+//        print(myArray,stage);
 
-        HBox buttonBox = new HBox(10, getPreviousStep, getNextStep, getSkippedStep);
+//        Button getNextStep = new Button("Next Step");
+//        getNextStep.setOnAction(e -> darwin.nextView(myArray, stage));
+//        Button getPreviousStep = new Button("Previous Step");
+//        getPreviousStep.setOnAction(e -> darwin.prevView(myArray, stage));
+//        Button getSkippedStep = new Button("Skip 10");
+//        getSkippedStep.setOnAction(e -> darwin.skip10View(myArray, stage));
 
-        root.getChildren().addAll(textLbl,p, t, buttonBox);
-        Scene scene = new Scene(pane);
-        Scene scene2 = new Scene(root);
-        Stage stage1 = new Stage();
-        stage1.setScene(scene2);
-        stage1.setTitle("MAIN MENU");
+//        HBox buttonBox = new HBox(10, getPreviousStep, getNextStep, getSkippedStep);
+
+//        root.getChildren().addAll(textLbl,p, t, buttonBox);
+//        Scene scene = new Scene(pane);
+//        Scene scene2 = new Scene(root);
+//        Stage stage1 = new Stage();
+//        stage1.setScene(scene2);
+//        stage1.setTitle("MAIN MENU");
 
 //        stage.setScene(scene);
-        stage.setTitle("Step number 1");
-        stage.show();
-        stage1.show();
+//        stage.setTitle("Step number 1");
+//        stage.show();
+//        stage1.show();
 //        stage.setScene(scene2);
     }
 
-    private void prevView(DrawType[][][] myArray, Stage stage) {
-        s--;
-        if (s < 0) {
-            s++;
-            return;
-        }
-        print(myArray,stage);
-        stage.setTitle("Step number " + (s + 1));
-    }
+//    private void prevView(DrawType[][][] myArray, Stage stage) {
+//        s--;
+//        if (s < 0) {
+//            s++;
+//            return;
+//        }
+//        print(myArray,stage);
+//        stage.setTitle("Step number " + (s + 1));
+//    }
+//
+//    private void nextView(DrawType[][][] myArray, Stage stage) {
+//        s++;
+//        if (s >= myArray.length) {
+//            s--;
+//            return;
+//        }
+//        print(myArray,stage);
+//        stage.setTitle("Step number " + (s + 1));
+//    }
+//
+//    private void skip10View(DrawType[][][] myArray, Stage stage) {
+//        s += 10;
+//        if (s >= myArray.length) {
+//            s -= 10;
+//            return;
+//        }
+//        print(myArray,stage);
+//        stage.setTitle("Step number " + (s + 1));
+//    }
 
-    private void nextView(DrawType[][][] myArray, Stage stage) {
-        s++;
-        if (s >= myArray.length) {
-            s--;
-            return;
-        }
-        print(myArray,stage);
-        stage.setTitle("Step number " + (s + 1));
-    }
 
-    private void skip10View(DrawType[][][] myArray, Stage stage) {
-        s += 10;
-        if (s >= myArray.length) {
-            s -= 10;
-            return;
-        }
-        print(myArray,stage);
-        stage.setTitle("Step number " + (s + 1));
-    }
-
-
-    private void print(DrawType[][][] myArray, Stage stage){
-        GridPane pane = new GridPane();
-        for (int x = 0; x < myArray[s].length; x++) {
-            for (int y = 0; y < myArray[s][x].length; y++) {
-                Rectangle rect= new Rectangle(10,10);
-                rect.setStroke(Color.TRANSPARENT);
-                rect.setFill(myArray[s][x][y].getColor());
-                Label label = new Label(" ", rect);
-                pane.add(label, x, y);
-            }
-        }
-        Scene scene = new Scene(pane);
-        stage.setScene(scene);
-    }
+//    private void print(DrawType[][][] myArray, Stage stage){
+//        GridPane pane = new GridPane();
+//        for (int x = 0; x < myArray[s].length; x++) {
+//            for (int y = 0; y < myArray[s][x].length; y++) {
+//                Rectangle rect= new Rectangle(10,10);
+//                rect.setStroke(Color.TRANSPARENT);
+//                rect.setFill(myArray[s][x][y].getColor());
+//                Label label = new Label(" ", rect);
+//                pane.add(label, x, y);
+//            }
+//        }
+//        Scene scene = new Scene(pane);
+//        stage.setScene(scene);
+//    }
 //    private void print(Node node) {
 //        System.out.println("Creating a printer job...");
 //
