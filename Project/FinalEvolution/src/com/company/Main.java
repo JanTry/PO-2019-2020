@@ -51,7 +51,8 @@ public class Main extends Application {
 //        int presetSteps = 1000; //And presetSteps
         stage.show();
         Boolean done= darwin.next(stage);
-        for(int i=0;i<2 && darwin.next(stage);i++);
+        for(int i=0;i<200 && darwin.next(stage);i++)
+            wait(200);
 //        while(darwin.next(stage)){
 //            this.wait(100);
 //        }

@@ -41,9 +41,10 @@ public class Evolution {
     }
 
     public boolean next(Stage stage) throws IOException, InterruptedException {
+        boolean flag=map.process();
         print1(this.VisualizationArray, stage);
-        this.map.draw();
-        return map.process();
+        VisualizationArray=this.map.drawing();
+        return flag;
     }
 
 
@@ -84,8 +85,12 @@ public class Evolution {
                 if (false) throw new InterruptedException();
                 Rectangle rect = new Rectangle(10, 10);
                 rect.setStroke(Color.TRANSPARENT);
-                rect.setFill(DrawType.ANIMAL.getColor());
-//                rect.setFill(VisualizationArray[x][y].getColor());
+//                rect.setFill(DrawType.GRASS.getColor());
+                DrawType vis=VisualizationArray[x][y];
+                if(vis==null)vis=DrawType.BLANK;
+//                System.out.println(vis);
+                Color color=vis.getColor();
+                rect.setFill(color);
 //                rect.setFill(myArray[s][x][y].getColor());
                 Label label = new Label(" ", rect);
                 pane.add(label, x, y);
