@@ -57,7 +57,7 @@ public class Map {
         hashMap.remove(position);
         if (t.objectType() == Type.GRASS) {
             grasses.remove(t);
-        } else
+        } else if(t.objectType()==Type.ANIMAL)
             animals.remove(t);
     }
 
@@ -90,6 +90,8 @@ public class Map {
     }
 
     public boolean process() { //Basic part
+        List<Animal> animalsToMove = new LinkedList<Animal>();
+        animalsToMove.clear();
         this.deleteDead();
 //        System.out.println(animals.size());
         if (animals.size() == 0) return false;
@@ -98,7 +100,7 @@ public class Map {
         while (animals.get(0).valid) {
             animal = animals.get(0);
             animals.remove(0);
-            animal.process(this);
+            animal.process(this,animalsToMove);
             animal.valid = false;
             animals.add(animal);
         }
@@ -112,6 +114,15 @@ public class Map {
             ; //It might not spawn if there is too much grass all around.
 //         I stayed with 30 tries, as it was efficient enough
 //        Now, when there are not many animals on a big map we might see their path in estimation as the map kind of shows where it was
+        for(Animal a:animalsToMove){
+            Vector2d newPosition=a.getPosition().add(a.getDirection().toUnitVector());
+            newPosition=this.bound(newPosition);
+            if(!this.isOccupied(newPosition)) {
+                this.replace(a,a.getPosition(),newPosition);
+                a.moveForward(this);
+            }
+        }
+        animalsToMove.clear();
         return true;
     }
 

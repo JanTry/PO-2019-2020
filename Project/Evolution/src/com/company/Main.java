@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static java.lang.Thread.sleep;
+
 public class Main extends Application {
 
     int s = 0;
@@ -34,7 +36,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, InterruptedException {
         VBox root = new VBox(5);
         Label textLbl = new Label("                ");
         TextArea text = new TextArea();
@@ -47,8 +49,8 @@ public class Main extends Application {
         t.setX(20.0f);
         t.setY(65.0f);
         GridPane pane = new GridPane();
-        Evolution darwin = new Evolution(50, 30, 160, 10, 50);
-        int presetSteps = 1000; //And presetSteps
+        Evolution darwin = new Evolution(90, 50, 90, 30, 60);
+        int presetSteps = 5000; //And presetSteps
         DrawType[][][] myArray = darwin.run(presetSteps);
         print(myArray,stage);
 
@@ -72,6 +74,11 @@ public class Main extends Application {
         stage.setTitle("Step number 1");
         stage.show();
         stage1.show();
+//        sleep(10000);
+//        while(s<1000){
+//            nextView(myArray,stage);
+//            sleep(100);
+//        }
 //        stage.setScene(scene2);
     }
 

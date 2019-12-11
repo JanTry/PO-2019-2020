@@ -1,5 +1,9 @@
 package com.company;
 
+import java.util.List;
+import java.util.LinkedList;
+//import java.util.List;
+
 public class Animal implements IObject {
     public boolean valid = true;
     private Vector2d position = new Vector2d(2, 2);
@@ -31,6 +35,9 @@ public class Animal implements IObject {
         this.valid = valid;
     }
 
+    public Direction getDirection(){
+        return this.direction;
+    }
     public Genes getGenes() {
         return this.genes;
     }
@@ -57,8 +64,9 @@ public class Animal implements IObject {
         }
     }
 
-    public Animal moveForward() {
+    public Animal moveForward(Map map) {
         this.position = this.position.add(this.direction.toUnitVector());
+        this.position=map.bound(this.position);
         return this;
     }
 
@@ -75,7 +83,7 @@ public class Animal implements IObject {
         return dir;
     }
 
-    public void process(Map map) {
+    public void process(Map map, List<Animal> animalsToMove) {
         this.rotate(this.genes.getRotation());
         Vector2d newPosition = this.position.add(this.direction.toUnitVector());
 
@@ -88,16 +96,18 @@ public class Animal implements IObject {
                     map.deleteFromPosition(newPosition);
                     this.eatGrass(map.getGrassEnergy());
                     map.replace(this, this.position, newPosition);
-                    this.position = newPosition;
-                    this.moveForward();
-                    map.replace(this, this.position, newPosition);
-                    this.position = newPosition;
-                } else if (object.getEnergy() > 5 && this.getEnergy() > 5) {
+//                    this.position = newPosition;
+                    this.moveForward(map);
+//                    map.replace(this, this.position, newPosition);
+//                    this.position = newPosition;
+                } else if (object.getEnergy() >= map.getGrassEnergy()/2 && this.getEnergy() >=  map.getGrassEnergy()/2) {
                     int[] tab = this.genes.combine(object.getGenes());
                     Direction temp = this.randomDirection();
                     Vector2d childPosition = newPosition.add(temp.toUnitVector());
+                    childPosition=map.bound(childPosition);
                     int childEnergy = (this.getEnergy() / 4) + (object.getEnergy() / 4);
                     Animal animal = new Animal(childPosition, tab, childEnergy, temp, false);
+                    animalsToMove.add(this);
 
                     for (int i = 0; i < 20 && !(map.place(animal)); i++) {
                         temp = this.randomDirection();
@@ -106,6 +116,7 @@ public class Animal implements IObject {
                     }
                     this.setEnergy((this.getEnergy() * 3) / 4);
                     object.setEnergy(3 * object.getEnergy() / 4);
+                    this.valid=false;
                 }
                 this.energy--;
                 return;

@@ -6,7 +6,8 @@ public enum DrawType {
     ANIMAL,
     GRASS,
     BLANK,
-    TiredAnimal;
+    TiredAnimal,
+    AboutToDieAnimal;
 
     public Color getColor(){
         switch(this){
@@ -18,6 +19,8 @@ public enum DrawType {
                 return Color.WHITE;
             case TiredAnimal:
                 return Color.INDIANRED;
+            case AboutToDieAnimal:
+                return Color.BLACK;
         }
         return Color.WHITE;
     }

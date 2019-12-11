@@ -16,7 +16,8 @@ public class AppVisualizer {
                     if(p.objectType()==Type.ANIMAL){
                         Animal t=(Animal)p;
                         if(t.getEnergy()>map.getGrassEnergy())array[i][j]=DrawType.ANIMAL;
-                        else array[i][j]=DrawType.TiredAnimal;
+                        else if(t.getEnergy()==0) array[i][j]=DrawType.AboutToDieAnimal;
+                            else array[i][j]=DrawType.TiredAnimal;
                     }
                     else array[i][j]=DrawType.GRASS;
 

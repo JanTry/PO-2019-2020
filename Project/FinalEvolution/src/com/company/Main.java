@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static java.lang.Thread.sleep;
+
 public class Main extends Application {
 
     int s = 0;
@@ -51,8 +53,10 @@ public class Main extends Application {
 //        int presetSteps = 1000; //And presetSteps
         stage.show();
         Boolean done= darwin.next(stage);
-        for(int i=0;i<200 && darwin.next(stage);i++)
-            wait(200);
+        for(int i=0;i<500;i++) {
+            darwin.next(stage);
+            System.in.read();
+        }
 //        while(darwin.next(stage)){
 //            this.wait(100);
 //        }
