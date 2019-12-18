@@ -53,6 +53,7 @@ public class Main extends Application {
         blank1.setY(65.0f);
 
         Evolution darwin = new Evolution(sizeX, sizeY, energy, animalNumber, grassEnergy, stage);
+        Boolean done = darwin.next(stage, topAnimalGenes, topAnimalEnergy);
         stage.show();
         Text generalInfo1 = new Text();
         generalInfo1.setText("Size of map is: " + sizeX + " " + sizeY);
@@ -60,38 +61,6 @@ public class Main extends Application {
         generalInfo2.setText(animalNumber + " animals start with " + energy + " energy each");
         Text generalInfo3 = new Text();
         generalInfo3.setText("Every eaten grass gives " + grassEnergy + " energy");
-        Boolean done = darwin.next(stage, topAnimalGenes, topAnimalEnergy);
-//        Button getNextStep = new Button("Next Step");
-//        getNextStep.setOnAction(e -> {
-//            try {
-//                darwin.next(stage, topAnimalGenes, topAnimalEnergy);
-//                s = s + 1;
-//                stage.setTitle("Step number " + (s + 1));
-//            } catch (IOException | InterruptedException ex) {
-//                ex.printStackTrace();
-//            }
-//        });
-//        Button getSkippedStep = new Button("Skip 10 steps");
-//        getSkippedStep.setOnAction(e -> {
-//            try {
-//                darwin.next10(stage, topAnimalGenes, topAnimalEnergy);
-//                s = s + 10;
-//                stage.setTitle("Step number " + (s + 1));
-//            } catch (IOException | InterruptedException ex) {
-//                ex.printStackTrace();
-//            }
-//        });
-//        Button getSkipped2Step = new Button("Skip 100 steps");
-//        getSkipped2Step.setOnAction(e -> {
-//            try {
-//                darwin.next100(stage, topAnimalGenes, topAnimalEnergy);
-//                s = s + 100;
-//                stage.setTitle("Step number " + (s + 1));
-//            } catch (IOException | InterruptedException ex) {
-//                ex.printStackTrace();
-//            }
-//        });
-//        HBox buttonBox = new HBox(10, getNextStep, getSkippedStep, getSkipped2Step);
 
 
         AnimationTimer programButtonAnimation = new AnimationTimer(){
@@ -114,14 +83,6 @@ public class Main extends Application {
         start.setOnAction(e -> programButtonAnimation.start());
         Button stop = new Button("Stop the animation");
         stop.setOnAction(e -> programButtonAnimation.stop());
-//            try {
-//                darwin.next(stage, topAnimalGenes, topAnimalEnergy);
-//                s = s + 1;
-//                stage.setTitle("Step number " + (s + 1));
-//            } catch (IOException | InterruptedException ex) {
-//                ex.printStackTrace();
-//            }
-//        });
         HBox buttonBox = new HBox(10, start, stop);
         Stage stage1 = new Stage();
         root.getChildren().addAll(generalInfo1, generalInfo2, generalInfo3, blank1, animalLable, topAnimalGenes, energyLabel, topAnimalEnergy, blank2, buttonBox);
