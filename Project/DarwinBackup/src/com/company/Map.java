@@ -1,11 +1,5 @@
 package com.company;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-//import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,18 +78,13 @@ class Map {
         return this.VisualizationArray;
     }
 
-
-    private void delete(Animal animal, GridPane pane, int recSize) {
-        Rectangle r=new Rectangle(recSize, recSize);
-        r.setFill(DrawType.BLANK.getColor());
-        r.setStroke(DrawType.BLANK.getColor());
-        pane.add(new Label(" ",r), animal.getPosition().getX(), animal.getPosition().getY());  // column=3 row=1
+    private void delete(Animal animal) {
         hashMap.remove(animal.getPosition());
         animals.remove(animal);
         this.VisualizationArray[animal.getPosition().getX()][animal.getPosition().getY()] = DrawType.BLANK;
     }
 
-    private void deleteDead(GridPane pane, int recSize) {
+    private void deleteDead() {
         int size = animals.size();
         Animal animal;
         for (int i = 0; i < size; i++) {
@@ -103,26 +92,23 @@ class Map {
             animals.remove(0);
             animals.add(animal);
             if (!(animal.getEnergy() > 0)) {
-                this.delete(animal, pane, recSize);
+                this.delete(animal);
             }
         }
     }
 
-
-
-    boolean process(GridPane pane, int recSize) { //Basic part
+    boolean process() { //Basic part
         int max_energy = 0;
         Animal topAnimal = animals.get(0);
         List<Animal> animalsToMove = new LinkedList<Animal>();
-        this.deleteDead(pane, recSize);
+        this.deleteDead();
         if (animals.size() == 0) return false;
         int size = animals.size();
         Animal animal;
         while (animals.get(0).valid) {
             animal = animals.get(0);
             animals.remove(0);
-
-            animal.process(this, animalsToMove, pane, recSize);
+            animal.process(this, animalsToMove);
             animal.valid = false;
             animals.add(animal);
             if (animal.getEnergy() > max_energy) {
@@ -149,10 +135,6 @@ class Map {
             }
         }
         animalsToMove.clear();
-        Rectangle r=new Rectangle(recSize, recSize);
-        r.setFill(DrawType.TopAnimal.getColor());
-        r.setStroke(DrawType.TopAnimal.getColor());
-        pane.add(new Label(" ",r), topAnimal.getPosition().getX(), topAnimal.getPosition().getY());
         this.VisualizationArray[topAnimal.getPosition().getX()][topAnimal.getPosition().getY()] = DrawType.TopAnimal;
         this.genes = topAnimal.getGenes().getGenes();
         this.maxAnimalEnergy = topAnimal.getEnergy();

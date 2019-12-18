@@ -1,7 +1,5 @@
 package com.company;
 
-import javafx.scene.layout.GridPane;
-
 import java.util.List;
 //import java.util.List;
 
@@ -76,7 +74,7 @@ public class Animal implements IObject {
         return dir;
     }
 
-    void process(Map map, List<Animal> animalsToMove, GridPane pane, int recSize) {
+    void process(Map map, List<Animal> animalsToMove) {
 
         this.rotate(this.genes.getRotation());
         Vector2d newPosition = this.position.add(this.direction.toUnitVector());

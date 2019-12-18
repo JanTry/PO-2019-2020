@@ -1,5 +1,6 @@
 package com.company;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,6 +12,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+
+
 public class Main extends Application {
     int s = 0;
 
@@ -19,6 +23,7 @@ public class Main extends Application {
         Application.launch(args);
     }
 
+
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
         int sizeX = 120;
@@ -26,7 +31,7 @@ public class Main extends Application {
         int energy = 160;
         int animalNumber = 10;
         int grassEnergy = 50;
-        int recSize = 5;
+
 
 
         VBox root = new VBox(5);
@@ -47,7 +52,8 @@ public class Main extends Application {
         blank1.setX(20.0f);
         blank1.setY(65.0f);
 
-        Evolution darwin = new Evolution(sizeX, sizeY, energy, animalNumber, grassEnergy, stage, recSize);
+        Evolution darwin = new Evolution(sizeX, sizeY, energy, animalNumber, grassEnergy, stage);
+        Boolean done = darwin.next(stage, topAnimalGenes, topAnimalEnergy);
         stage.show();
         Text generalInfo1 = new Text();
         generalInfo1.setText("Size of map is: " + sizeX + " " + sizeY);
@@ -55,46 +61,38 @@ public class Main extends Application {
         generalInfo2.setText(animalNumber + " animals start with " + energy + " energy each");
         Text generalInfo3 = new Text();
         generalInfo3.setText("Every eaten grass gives " + grassEnergy + " energy");
-        Boolean done = darwin.next(stage, topAnimalGenes, topAnimalEnergy);
-        Button getNextStep = new Button("Next Step");
-        getNextStep.setOnAction(e -> {
-            try {
-                darwin.next(stage, topAnimalGenes, topAnimalEnergy);
-                s = s + 1;
-                stage.setTitle("Step number " + (s + 1));
-            } catch (IOException | InterruptedException ex) {
-                ex.printStackTrace();
+
+
+        AnimationTimer programButtonAnimation = new AnimationTimer(){
+            private long lastUpdate = 0;
+            public void handle(long now){
+                if(now - lastUpdate >= 28_000_000){
+                    try {
+                        darwin.next(stage, topAnimalGenes, topAnimalEnergy);
+                        s+=1;
+                        stage.setTitle("Step number " + (s + 1));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        });
-//        Button getSkippedStep = new Button("Skip 10 steps");
-//        getSkippedStep.setOnAction(e -> {
-//            try {
-//                darwin.next10(stage, topAnimalGenes, topAnimalEnergy);
-//                s = s + 10;
-//                stage.setTitle("Step number " + (s + 1));
-//            } catch (IOException | InterruptedException ex) {
-//                ex.printStackTrace();
-//            }
-//        });
-//        Button getSkipped2Step = new Button("Skip 100 steps");
-//        getSkipped2Step.setOnAction(e -> {
-//            try {
-//                darwin.next100(stage, topAnimalGenes, topAnimalEnergy);
-//                s = s + 100;
-//                stage.setTitle("Step number " + (s + 1));
-//            } catch (IOException | InterruptedException ex) {
-//                ex.printStackTrace();
-//            }
-//        });
-//        HBox buttonBox = new HBox(10, getNextStep, getSkippedStep, getSkipped2Step);
-        HBox buttonBox = new HBox(10, getNextStep);
+        };
+        Button start = new Button("Start the animation");
+        start.setOnAction(e -> programButtonAnimation.start());
+        Button stop = new Button("Stop the animation");
+        stop.setOnAction(e -> programButtonAnimation.stop());
+        HBox buttonBox = new HBox(10, start, stop);
         Stage stage1 = new Stage();
         root.getChildren().addAll(generalInfo1, generalInfo2, generalInfo3, blank1, animalLable, topAnimalGenes, energyLabel, topAnimalEnergy, blank2, buttonBox);
-//        root.getChildren().addAll(generalInfo1, generalInfo2, generalInfo3, blank1, animalLable, topAnimalGenes, energyLabel, topAnimalEnergy, blank2);
         Scene scene2 = new Scene(root);
         stage1.setScene(scene2);
         stage1.setTitle("MAIN MENU");
         stage1.show();
+
+
+
     }
 
 }
