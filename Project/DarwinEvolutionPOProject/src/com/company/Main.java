@@ -43,28 +43,35 @@ public class Main extends Application {
         text.setPrefColumnCount(20);
         text.setWrapText(true);
         Text animalLable = new Text();
-        animalLable.setText("Genes of Animal with the most energy:");
+        animalLable.setText("Genes of Animal with the most energy:                                                            ");
         Text topAnimalGenes = new Text();
         topAnimalGenes.setText("");
         Text blank1 = new Text();
         Text energyLabel = new Text();
         Text blank2 = new Text();
         energyLabel.setText("His energy is:");
+        Text choosenAnimalPower = new Text();
+        choosenAnimalPower.setText("This animal power is: ");
+        Text choosenLabel=new Text();
+        choosenLabel.setText("His genes: ");
+        Text choosenAnimalGenes = new Text();
+        choosenAnimalGenes.setText("");
         Text topAnimalEnergy = new Text();
         topAnimalEnergy.setText(" ");
         blank1.setX(20.0f);
         blank1.setY(65.0f);
         ObservableList<Integer> options =
                 FXCollections.observableArrayList(
-                        1,
-                        2,
-                        3,
-                        4,
-                        5
                 );
-        Integer[] animalID = {new Integer(0)};
+        options.add(6);
+        Integer[] animalID = {-1};
         Text pickedAnimal = new Text();
         pickedAnimal.setText("You picked animal number "+animalID[0]);
+//        Text pickedAnimal = new Text();
+//        pickedAnimal.setText("You picked animal number "+animalID[0]);
+
+        Evolution darwin = new Evolution(sizeX, sizeY, energy, animalNumber, grassEnergy, stage, options);
+//        Boolean done = darwin.next(topAnimalGenes, topAnimalEnergy);
         ComboBox<Integer> comboBox = new ComboBox<>(options);
         comboBox.setPromptText("Pick an animal to watch");
         comboBox.setEditable(false);
@@ -73,13 +80,17 @@ public class Main extends Application {
             public void changed(ObservableValue ov, Integer t, Integer t1) {
                 animalID[0] = t1;
                 pickedAnimal.setText("You picked animal number "+animalID[0]);
+                Animal a=darwin.getAnimal(animalID[0]);
+                if(a!=null){
+                    choosenAnimalPower.setText("This animal power is: "+a.getEnergy());
+                    choosenAnimalGenes.setText(a.getGenes().toString());
+                }
+                else{
+                    choosenAnimalPower.setText("This animal power is: ");
+                    choosenAnimalGenes.setText(" ");
+                }
             }
         });
-//        Text pickedAnimal = new Text();
-//        pickedAnimal.setText("You picked animal number "+animalID[0]);
-
-        Evolution darwin = new Evolution(sizeX, sizeY, energy, animalNumber, grassEnergy, stage);
-//        Boolean done = darwin.next(topAnimalGenes, topAnimalEnergy);
         stage.show();
         Text generalInfo1 = new Text();
         generalInfo1.setText("Size of map is: " + sizeX + " " + sizeY);
@@ -93,12 +104,17 @@ public class Main extends Application {
             private long lastUpdate = 0;
             public void handle(long now){
                 if(now - lastUpdate >= 28_000_000){
-                    try {
-                        darwin.next(topAnimalGenes, topAnimalEnergy);
-                        s+=1;
-                        stage.setTitle("Step number " + (s + 1));
-                    } catch (IOException | InterruptedException e) {
-                        e.printStackTrace();
+                    darwin.next(topAnimalGenes, topAnimalEnergy);
+                    s+=1;
+                    stage.setTitle("Step number " + (s + 1));
+                    Animal a=darwin.getAnimal(animalID[0]);
+                    if(a!=null){
+                        choosenAnimalPower.setText("This animal power is: "+a.getEnergy());
+                        choosenAnimalGenes.setText(a.getGenes().toString());
+                    }
+                    else{
+                        choosenAnimalPower.setText("This animal power is: ");
+                        choosenAnimalGenes.setText(" ");
                     }
                 }
             }
@@ -109,7 +125,7 @@ public class Main extends Application {
         stop.setOnAction(e -> programButtonAnimation.stop());
         HBox buttonBox = new HBox(10, start, stop);
         Stage stage1 = new Stage();
-        root.getChildren().addAll(generalInfo1, generalInfo2, generalInfo3, blank1, animalLable, topAnimalGenes, energyLabel, topAnimalEnergy, blank2, buttonBox, comboBox, pickedAnimal);
+        root.getChildren().addAll(generalInfo1, generalInfo2, generalInfo3, blank1, animalLable, topAnimalGenes, energyLabel, topAnimalEnergy, blank2, buttonBox, comboBox, pickedAnimal,choosenAnimalPower,choosenLabel,choosenAnimalGenes);
         Scene scene2 = new Scene(root);
         stage1.setScene(scene2);
         stage1.setTitle("MAIN MENU");

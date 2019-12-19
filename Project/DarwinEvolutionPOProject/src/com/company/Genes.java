@@ -25,5 +25,14 @@ class Genes {
         }
         return tab;
     }
+    public String toString(){
+        String genes = new String("[");
+        for (int i = 0; i < 32; i++) {
+            genes=genes+this.genes[i];
+            genes=genes+", ";
+        }
+        genes=genes+"]";
+        return genes;
+    }
 
 }

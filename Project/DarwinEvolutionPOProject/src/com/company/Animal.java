@@ -9,21 +9,28 @@ public class Animal implements IObject {
     private Direction direction = Direction.NORTH;
     private int energy;
     private Genes genes;
+    private int index;
 
-    Animal(Vector2d position, int[] tab, int energy) {
+    Animal(Vector2d position, int[] tab, int energy, int index) {
         this.position.x = position.getX();
         this.position.y = position.getY();
         this.energy = energy;
         genes = new Genes(tab);
+        this.index=index;
     }
 
-    private Animal(Vector2d position, int[] tab, int energy, Direction dir, boolean valid) {
+    private Animal(Vector2d position, int[] tab, int energy, Direction dir, boolean valid, int index) {
         this.position.x = position.getX();
         this.position.y = position.getY();
         this.energy = energy;
         genes = new Genes(tab);
         this.direction = dir;
         this.valid = valid;
+        this.index=index;
+    }
+
+    public int getIndex(){
+        return this.index;
     }
 
     Direction getDirection() {
@@ -95,14 +102,20 @@ public class Animal implements IObject {
                     Vector2d childPosition = newPosition.add(temp.toUnitVector());
                     childPosition = map.bound(childPosition);
                     int childEnergy = (this.getEnergy() / 4) + (object.getEnergy() / 4);
-                    Animal animal = new Animal(childPosition, tab, childEnergy, temp, false);
+                    Animal animal = new Animal(childPosition, tab, childEnergy, temp, false, map.actualIndex);
                     animalsToMove.add(this);
-                    for (int i = 0; i < 20 && !(map.place(animal)); i++) {
+                    int i=0;
+                    for (i = 0; i < 20 && !(map.place(animal)); i++) {
                         temp = this.randomDirection();
                         childPosition = newPosition.add(temp.toUnitVector());
                         childPosition = map.bound(childPosition);
-                        animal = new Animal(childPosition, tab, childEnergy, temp, false);
+                        animal = new Animal(childPosition, tab, childEnergy, temp, false, map.actualIndex);
                     }
+                    if(i!=20){
+                        map.options.add(map.actualIndex);
+                        map.actualIndex++;
+                    }
+                    map.actualIndex++;
                     this.setEnergy((this.getEnergy() * 3) / 4);
                     object.setEnergy(3 * object.getEnergy() / 4);
                     this.valid = false;
