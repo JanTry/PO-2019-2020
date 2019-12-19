@@ -32,8 +32,6 @@ public class Main extends Application {
         int animalNumber = 10;
         int grassEnergy = 50;
 
-
-
         VBox root = new VBox(5);
         TextArea text = new TextArea();
         text.setPrefRowCount(20);
@@ -71,9 +69,7 @@ public class Main extends Application {
                         darwin.next(stage, topAnimalGenes, topAnimalEnergy);
                         s+=1;
                         stage.setTitle("Step number " + (s + 1));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
+                    } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 }

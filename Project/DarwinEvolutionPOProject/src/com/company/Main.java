@@ -2,8 +2,13 @@ package com.company;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -49,9 +54,32 @@ public class Main extends Application {
         topAnimalEnergy.setText(" ");
         blank1.setX(20.0f);
         blank1.setY(65.0f);
+        ObservableList<Integer> options =
+                FXCollections.observableArrayList(
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                );
+        Integer[] animalID = {new Integer(0)};
+        Text pickedAnimal = new Text();
+        pickedAnimal.setText("You picked animal number "+animalID[0]);
+        ComboBox<Integer> comboBox = new ComboBox<>(options);
+        comboBox.setPromptText("Pick an animal to watch");
+        comboBox.setEditable(false);
+        comboBox.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue ov, Integer t, Integer t1) {
+                animalID[0] = t1;
+                pickedAnimal.setText("You picked animal number "+animalID[0]);
+            }
+        });
+//        Text pickedAnimal = new Text();
+//        pickedAnimal.setText("You picked animal number "+animalID[0]);
 
         Evolution darwin = new Evolution(sizeX, sizeY, energy, animalNumber, grassEnergy, stage);
-        Boolean done = darwin.next(stage, topAnimalGenes, topAnimalEnergy);
+//        Boolean done = darwin.next(topAnimalGenes, topAnimalEnergy);
         stage.show();
         Text generalInfo1 = new Text();
         generalInfo1.setText("Size of map is: " + sizeX + " " + sizeY);
@@ -66,7 +94,7 @@ public class Main extends Application {
             public void handle(long now){
                 if(now - lastUpdate >= 28_000_000){
                     try {
-                        darwin.next(stage, topAnimalGenes, topAnimalEnergy);
+                        darwin.next(topAnimalGenes, topAnimalEnergy);
                         s+=1;
                         stage.setTitle("Step number " + (s + 1));
                     } catch (IOException | InterruptedException e) {
@@ -81,7 +109,7 @@ public class Main extends Application {
         stop.setOnAction(e -> programButtonAnimation.stop());
         HBox buttonBox = new HBox(10, start, stop);
         Stage stage1 = new Stage();
-        root.getChildren().addAll(generalInfo1, generalInfo2, generalInfo3, blank1, animalLable, topAnimalGenes, energyLabel, topAnimalEnergy, blank2, buttonBox);
+        root.getChildren().addAll(generalInfo1, generalInfo2, generalInfo3, blank1, animalLable, topAnimalGenes, energyLabel, topAnimalEnergy, blank2, buttonBox, comboBox, pickedAnimal);
         Scene scene2 = new Scene(root);
         stage1.setScene(scene2);
         stage1.setTitle("MAIN MENU");

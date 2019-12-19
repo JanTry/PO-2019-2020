@@ -1,5 +1,9 @@
 package com.company;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,12 +14,12 @@ class Map {
     private int sizeX;
     private int sizeY;
     private List<Animal> animals = new LinkedList<Animal>();
-    private DrawType[][] VisualizationArray;
+    private GridPane VisualizationArray;
     private HashMap<Vector2d, IObject> hashMap = new HashMap<Vector2d, IObject>();
     private int grassEnergy;
 
 
-    Map(int sizeX, int sizeY, int grassEnergy, DrawType[][] VisualizationArray) {
+    Map(int sizeX, int sizeY, int grassEnergy, GridPane VisualizationArray) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.grassEnergy = grassEnergy;
@@ -35,16 +39,32 @@ class Map {
         return type != Type.GRASS;
     }
 
+    Label getLabel(DrawType type){
+        Rectangle rect = new Rectangle(6, 6);
+        rect.setStroke(type.getColor());
+        rect.setFill(type.getColor());
+        Label label = new Label(" ", rect);
+        return label;
+    }
+
     boolean place(IObject object) {
         if (isOccupied(object.getPosition())) return false;
         if (object.objectType() == Type.GRASS) {
-            this.VisualizationArray[object.getPosition().getX()][object.getPosition().getY()] = DrawType.GRASS;
+            Label label=getLabel(DrawType.GRASS);
+            this.VisualizationArray.add(label, object.getPosition().getX(), object.getPosition().getY());
+//            this.VisualizationArray.add() = DrawType.GRASS;
         } else {
             animals.add((Animal) object);
-            if (object.getEnergy() > this.getGrassEnergy())
-                this.VisualizationArray[object.getPosition().getX()][object.getPosition().getY()] = DrawType.ANIMAL;
-            else
-                this.VisualizationArray[object.getPosition().getX()][object.getPosition().getY()] = DrawType.TiredAnimal;
+            if (object.getEnergy() > this.getGrassEnergy()) {
+                Label label=getLabel(DrawType.ANIMAL);
+                this.VisualizationArray.add(label, object.getPosition().getX(), object.getPosition().getY());
+//                this.VisualizationArray[object.getPosition().getX()][object.getPosition().getY()] = DrawType.ANIMAL;
+            }
+            else {
+                Label label=getLabel(DrawType.TiredAnimal);
+                this.VisualizationArray.add(label, object.getPosition().getX(), object.getPosition().getY());
+//                this.VisualizationArray[object.getPosition().getX()][object.getPosition().getY()] = DrawType.TiredAnimal;
+            }
         }
         hashMap.put(object.getPosition(), object);
 
@@ -52,14 +72,27 @@ class Map {
     }
 
     void replace(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
+
         this.bound(oldPosition);
         this.bound(newPosition);
+        if(newPosition==oldPosition){
+            return;
+        }
         hashMap.remove(oldPosition);
-        this.VisualizationArray[oldPosition.getX()][oldPosition.getY()] = DrawType.BLANK;
+//        System.out.println("replace... "+oldPosition.getX()+" "+oldPosition.getY());
+        Label label2=getLabel(DrawType.BLANK);
+        this.VisualizationArray.add(label2, oldPosition.getX(), oldPosition.getY());
+//        this.VisualizationArray[oldPosition.getX()][oldPosition.getY()] = DrawType.BLANK;
         hashMap.put(newPosition, animal);
-        if (animal.getEnergy() > this.getGrassEnergy())
-            this.VisualizationArray[newPosition.getX()][newPosition.getY()] = DrawType.ANIMAL;
-        else this.VisualizationArray[newPosition.getX()][newPosition.getY()] = DrawType.TiredAnimal;
+        if (animal.getEnergy() > this.getGrassEnergy()){
+            Label label1=getLabel(DrawType.ANIMAL);
+            this.VisualizationArray.add(label1, newPosition.getX(), newPosition.getY() );
+        }
+        else{
+            Label label1=getLabel(DrawType.TiredAnimal);
+            this.VisualizationArray.add(label1, newPosition.getX(), newPosition.getY() );
+//            this.VisualizationArray[newPosition.getX()][newPosition.getY()] = DrawType.TiredAnimal;
+        }
     }
 
     IObject myObjectAt(Vector2d position) {
@@ -71,17 +104,22 @@ class Map {
         hashMap.remove(position);
         if (t.objectType() == Type.ANIMAL)
             animals.remove(t);
-        this.VisualizationArray[position.getX()][position.getY()] = DrawType.BLANK;
+        Label label=getLabel(DrawType.BLANK);
+        this.VisualizationArray.add(label, position.getX(), position.getY() );
+//        this.VisualizationArray[position.getX()][position.getY()] = DrawType.BLANK;
     }
 
-    DrawType[][] drawing() {
+    GridPane drawing() {
         return this.VisualizationArray;
     }
 
     private void delete(Animal animal) {
         hashMap.remove(animal.getPosition());
         animals.remove(animal);
-        this.VisualizationArray[animal.getPosition().getX()][animal.getPosition().getY()] = DrawType.BLANK;
+        Label label=getLabel(DrawType.BLANK);
+        System.out.println("DELETE");
+        this.VisualizationArray.add(label, animal.getPosition().getX(), animal.getPosition().getY());
+//        this.VisualizationArray[animal.getPosition().getX()][animal.getPosition().getY()] = DrawType.BLANK;
     }
 
     private void deleteDead() {
@@ -135,7 +173,9 @@ class Map {
             }
         }
         animalsToMove.clear();
-        this.VisualizationArray[topAnimal.getPosition().getX()][topAnimal.getPosition().getY()] = DrawType.TopAnimal;
+        Label label=getLabel(DrawType.TopAnimal);
+        this.VisualizationArray.add(label, topAnimal.getPosition().getX(), topAnimal.getPosition().getY() );
+//        this.VisualizationArray[topAnimal.getPosition().getX()][topAnimal.getPosition().getY()] = DrawType.TopAnimal;
         this.genes = topAnimal.getGenes().getGenes();
         this.maxAnimalEnergy = topAnimal.getEnergy();
         return true;
