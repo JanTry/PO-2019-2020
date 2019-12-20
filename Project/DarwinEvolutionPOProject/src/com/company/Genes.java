@@ -22,16 +22,18 @@ class Genes {
             if (p < 150) tab[i] = this.genes[i]; //Something from his mother
             if (p > 150) tab[i] = Father.genes[i]; //Something from his father
             if (p == 150) tab[i] = (int) (Math.random() * 8); //Mutations
+            //This is implemented as it was decided during classes
         }
         return tab;
     }
-    public String toString(){
-        String genes = new String("[");
+
+    public String toString() {
+        String genes = "[";
         for (int i = 0; i < 32; i++) {
-            genes=genes+this.genes[i];
-            genes=genes+", ";
+            genes = genes + this.genes[i];
+            genes = genes + ", ";
         }
-        genes=genes+"]";
+        genes = genes + "]";
         return genes;
     }
 

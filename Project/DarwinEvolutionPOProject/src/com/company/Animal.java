@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.List;
-//import java.util.List;
 
 public class Animal implements IObject {
     boolean valid = true;
@@ -16,7 +15,7 @@ public class Animal implements IObject {
         this.position.y = position.getY();
         this.energy = energy;
         genes = new Genes(tab);
-        this.index=index;
+        this.index = index;
     }
 
     private Animal(Vector2d position, int[] tab, int energy, Direction dir, boolean valid, int index) {
@@ -26,10 +25,10 @@ public class Animal implements IObject {
         genes = new Genes(tab);
         this.direction = dir;
         this.valid = valid;
-        this.index=index;
+        this.index = index;
     }
 
-    public int getIndex(){
+    public int getIndex() {
         return this.index;
     }
 
@@ -104,14 +103,14 @@ public class Animal implements IObject {
                     int childEnergy = (this.getEnergy() / 4) + (object.getEnergy() / 4);
                     Animal animal = new Animal(childPosition, tab, childEnergy, temp, false, map.actualIndex);
                     animalsToMove.add(this);
-                    int i=0;
+                    int i = 0;
                     for (i = 0; i < 20 && !(map.place(animal)); i++) {
                         temp = this.randomDirection();
                         childPosition = newPosition.add(temp.toUnitVector());
                         childPosition = map.bound(childPosition);
                         animal = new Animal(childPosition, tab, childEnergy, temp, false, map.actualIndex);
                     }
-                    if(i!=20){
+                    if (i != 20) {
                         map.options.add(map.actualIndex);
                         map.actualIndex++;
                     }
