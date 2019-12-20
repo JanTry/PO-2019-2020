@@ -28,9 +28,9 @@ public class Main extends Application {
         //Starting values! :D
         int sizeX = 120;
         int sizeY = 40;
-        int energy = 40;
-        int animalNumber = 200;
-        int grassEnergy = 40;
+        int energy = 160;
+        int animalNumber = 10;
+        int grassEnergy = 60;
         Darwin(stage, sizeX, sizeY, energy, animalNumber, grassEnergy);
     }
 

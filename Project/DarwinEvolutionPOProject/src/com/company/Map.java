@@ -71,13 +71,18 @@ class Map {
             this.VisualizationArray.add(label, object.getPosition().getX(), object.getPosition().getY());
         } else {
             animals.add((Animal) object);
-            if (object.getEnergy() > this.getGrassEnergy()) {
-                Label label = getLabel(DrawType.ANIMAL);
-                this.VisualizationArray.add(label, object.getPosition().getX(), object.getPosition().getY());
-            } else {
-                Label label = getLabel(DrawType.TiredAnimal);
-                this.VisualizationArray.add(label, object.getPosition().getX(), object.getPosition().getY());
+            Label label1=getLabel(DrawType.ANIMAL);
+            if (object.getEnergy()<this.getGrassEnergy()) {
+                label1 = getLabel(DrawType.VeryVeryVeryTiredAnimal);
+            } else if(object.getEnergy()<2*this.getGrassEnergy()){
+                label1 = getLabel(DrawType.VeryVeryTiredAnimal);
+            }else if(object.getEnergy() <4*this.getGrassEnergy()){
+                label1 = getLabel(DrawType.VeryTiredAnimal);
+            }else if(object.getEnergy() <8*this.getGrassEnergy()){
+                label1 = getLabel(DrawType.TiredAnimal);
             }
+
+            this.VisualizationArray.add(label1, object.getPosition().getX(), object.getPosition().getY());
         }
         hashMap.put(object.getPosition(), object);
 
@@ -85,7 +90,7 @@ class Map {
     }
 
     void replace(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
-
+        //Main coloring is done here
         this.bound(oldPosition);
         this.bound(newPosition);
         if (newPosition == oldPosition) {
@@ -95,13 +100,18 @@ class Map {
         Label label2 = getLabel(DrawType.BLANK);
         this.VisualizationArray.add(label2, oldPosition.getX(), oldPosition.getY());
         hashMap.put(newPosition, animal);
-        if (animal.getEnergy() > this.getGrassEnergy()) {
-            Label label1 = getLabel(DrawType.ANIMAL);
-            this.VisualizationArray.add(label1, newPosition.getX(), newPosition.getY());
-        } else {
-            Label label1 = getLabel(DrawType.TiredAnimal);
-            this.VisualizationArray.add(label1, newPosition.getX(), newPosition.getY());
+        Label label1=getLabel(DrawType.ANIMAL);
+        if (animal.getEnergy()<this.getGrassEnergy()) {
+            label1 = getLabel(DrawType.VeryVeryVeryTiredAnimal);
+        } else if(animal.getEnergy()<2*this.getGrassEnergy()){
+            label1 = getLabel(DrawType.VeryVeryTiredAnimal);
+        }else if(animal.getEnergy() <4*this.getGrassEnergy()){
+            label1 = getLabel(DrawType.VeryTiredAnimal);
+        }else if(animal.getEnergy() <8*this.getGrassEnergy()){
+            label1 = getLabel(DrawType.TiredAnimal);
         }
+
+        this.VisualizationArray.add(label1, newPosition.getX(), newPosition.getY());
     }
 
     IObject myObjectAt(Vector2d position) {
